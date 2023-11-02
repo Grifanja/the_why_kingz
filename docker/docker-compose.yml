@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  php-fpm:
+    container_name: php-the_why_kingz
+    build:
+      context: ./../
+      dockerfile: ./docker/php-fpm/Dockerfile
+      args:
+        - PUID=${PUID}
+        - PGID=${PGID}
+        - INSTALL_XDEBUG=${INSTALL_XDEBUG}
+    environment:
+      PHP_IDE_CONFIG: "serverName=Docker"
+    volumes:
+      - /var/www/vendor/
+      - ./../:/var/www/
+    ports:
+      - ${NGINX_HOST_HTTP_PORT}:8080
+
+  postgres:
+    container_name: postgres-the_why_kingz
+    build:
+      context: ./postgres
+    ports:
+      - ${POSTGRES_PORT}:5432
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
