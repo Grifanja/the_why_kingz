@@ -7,13 +7,15 @@ https://github.com/Grifanja/the_why_kingz
 ---
 # Run these commands in root app folder to start app
 
-docker-compose -f ./docker/docker-compose.yml build
-
 docker-compose -f ./docker/docker-compose.yml up -d
 
 docker-compose -f ./docker/docker-compose.yml exec -u www-data php-fpm bash
 
 php artisan migrate --seed
+
+npm install vue@next
+
+npm run build
 
 ---
 
