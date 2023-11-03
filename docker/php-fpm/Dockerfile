@@ -41,6 +41,13 @@ RUN chown www-data:www-data /var/www
 COPY --chown=www-data:www-data ./ /var/www
 WORKDIR /var/www
 
+COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=node /usr/local/bin/node /usr/local/bin/node
+RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm
+
+RUN apk add --update nodejs npm
+COPY ./../../ /var/www
+
 # Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 ARG BUILD_MODE=dev
@@ -53,8 +60,8 @@ RUN if [ ${BUILD_MODE} = dev ]; \
     fi;
 RUN chown -R www-data:www-data /var/www/vendor/
 
+RUN npm install vue@next
+
 EXPOSE 8080
 
-CMD ["/bin/sh", "./docker/php-fpm/run.sh"]
-
-
+CMD [ "/bin/sh", "./docker/php-fpm/run.sh"]
