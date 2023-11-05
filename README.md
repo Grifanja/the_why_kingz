@@ -13,10 +13,6 @@ docker-compose -f ./docker/docker-compose.yml exec -u www-data php-fpm bash
 
 php artisan migrate --seed
 
-npm install vue@next
-
-npm run build
-
 ---
 
 
